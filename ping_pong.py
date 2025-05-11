@@ -1,10 +1,11 @@
 import pygame
 import platform
 import random
+import sys
 
 pygame.init()
 
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 800, 600
 PADDLE_WIDTH, PADDLE_HEIGHT = 15, 90
 BALL_SIZE = 15
 FPS = 30
@@ -16,9 +17,9 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
 DIFFICULTY_LEVELS = {
-    1: {"bot_speed": 5, "ball_speed": 5, "bot_error_rate": 0.5},
-    2: {"bot_speed": 7, "ball_speed": 9, "bot_error_rate": 0.4},
-    3: {"bot_speed": 9, "ball_speed": 11, "bot_error_rate": 0.3},
+    1: {"bot_speed": 5, "ball_speed": 6, "bot_error_rate": 0.5},
+    2: {"bot_speed": 7, "ball_speed": 9, "bot_error_rate": 0.2},
+    3: {"bot_speed": 9, "ball_speed": 11, "bot_error_rate": 0.1},
 }
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -124,6 +125,10 @@ def update_game():
         ball_speed_y *= -1
 
     if ball.colliderect(player) or ball.colliderect(bot):
+        soundd_file = 'gluhoy-stuk.wav'
+        soundd_effect = pygame.mixer.Sound(soundd_file)
+        soundd_effect.set_volume(15.0)
+        soundd_effect.play()
         ball_speed_x *= -1
 
 
@@ -138,26 +143,32 @@ def update_game():
         reset_ball()
 
 
-        screen.fill(BLACK)
-        pygame.draw.rect(screen, RED, player)
-        pygame.draw.rect(screen, BLUE, bot)
-        pygame.draw.ellipse(screen, WHITE, ball)
-        pygame.draw.aaline(screen, WHITE, (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
+    screen.fill(BLACK)
+    pygame.draw.rect(screen, RED, player)
+    pygame.draw.rect(screen, BLUE, bot)
+    pygame.draw.ellipse(screen, WHITE, ball)
+    pygame.draw.aaline(screen, WHITE, (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
 
 
-        player_text = font.render(str(player_score), True, WHITE)
-        bot_text = font.render(str(bot_score), True, WHITE)
-        screen.blit(player_text, (WIDTH // 4, 20))
-        screen.blit(bot_text, (3 * WIDTH // 4, 20))
+    player_text = font.render(str(player_score), True, WHITE)
+    bot_text = font.render(str(bot_score), True, WHITE)
+    screen.blit(player_text, (WIDTH // 4, 20))
+    screen.blit(bot_text, (3 * WIDTH // 4, 20))
 
 
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    game_state = "menu"
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                game_state = "menu"
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
 def draw_game_over():
     screen.fill(BLACK)
+    sound_file = 'pukane-11.wav'
+    sound_effect = pygame.mixer.Sound(sound_file)
+    sound_effect.play()
     game_over_text = font.render("Game Over", True, WHITE)
     restart_text = font.render("Нажми r для перезапуска", True, WHITE)
     menu_text = font.render("нажми m для захода в меню", True, WHITE)
