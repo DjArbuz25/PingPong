@@ -3,6 +3,12 @@ from pathlib import Path
 import os
 import psutil
 
+def test_directory_exists():
+    assert os.path.exists('gluhoy-stuk.wav'),'файл no существует'
+    assert os.path.exists('pukane-11.wav'), 'файл no существует'
+
+
+
 def test_system_requeiments():
     assert os.cpu_count() >= 2
     memory = psutil.virtual_memory()
