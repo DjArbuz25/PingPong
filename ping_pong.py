@@ -4,10 +4,10 @@ import random
 
 pygame.init()
 
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 600, 400
 PADDLE_WIDTH, PADDLE_HEIGHT = 15, 90
 BALL_SIZE = 15
-FPS = 60
+FPS = 30
 
 #ЦВЕТА
 WHITE = (255, 255, 255)
