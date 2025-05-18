@@ -22,6 +22,22 @@ DIFFICULTY_LEVELS = {
     3: {"bot_speed": 9, "ball_speed": 11, "bot_error_rate": 0.1},
 }
 
+high_scores = []
+SCORE_FILE = "high_scores.txt"
+
+def load_score():
+    global high_scores
+    high_scores = []
+    try:
+        with open(SCORE_FILE, "r") as file:
+            for line in file:
+                if line.strip():
+                    player_s, bot_s = map(int, line.strip().split(":"))
+                    high_scores.append((player_s, bot_s))
+    except FileNotFoundError:
+        high_scores = []
+
+
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("ping pong :o")
 clock = pygame.time.Clock()
@@ -42,7 +58,7 @@ bot_score = 0
 font = pygame.font.Font(None, 36)
 
 #пункты игры
-menu_items = ["Играть", "Ривнь сложности: 1", "Выход"]
+menu_items = ["Играть", "Ривнь сложности: 1", "Рекорды", "Выход"]
 
 def reset_ball():
     global ball_speed_x, ball_speed_y
